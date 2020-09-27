@@ -22,7 +22,7 @@ XML PHP Extension
 
 Apache Enable : allow_url_fopen
 
-# Install
+# Installation 
 
 - Download and unzip files
 
