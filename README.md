@@ -1,3 +1,18 @@
+# Server Requirements
+
+PHP >= 7.2.0
+BCMath PHP Extension
+Ctype PHP Extension
+Fileinfo PHP extension
+JSON PHP Extension
+Mbstring PHP Extension
+OpenSSL PHP Extension
+PDO PHP Extension
+Tokenizer PHP Extension
+XML PHP Extension
+
+Enable : allow_url_fopen
+
 # Install
 
 - Download and unzip files
