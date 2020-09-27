@@ -1,3 +1,15 @@
+# Upfiring File Sharing 
+
+- User Management ( Administrator / Moderator / Contributor )
+- Pages Menagment 
+- Footer / Header custom script support ( Google Analytics, Ads Code etc )
+- Upfiring File Managmeent ( File Moderation, Listing etc )
+- Comments Menagmenet 
+- Advertising Panel : Top Banner / Side Banners / Announcment Box
+- Website Options ( Title , Description , Front Page menagment etc )
+
+Complete UFR File Support + Integrated S/L scraper to display the correct Seeders/Leechers numbers on each file. S/L numbers are updated on each link view / or via cron job which is explained bellow.
+
 # Server Requirements
 
 PHP >= 7.2.0
@@ -60,5 +72,7 @@ Apache Enable : allow_url_fopen
         php artisan storage:link
     
 -  In file /app/Providers/ViewServiceProvider.php uncommentstring string 31-49
+
+-   Add Cron Job to autoupdate S/L numbers automaticly 
 
 You are all done :)
