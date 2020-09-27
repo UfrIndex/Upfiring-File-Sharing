@@ -89,4 +89,4 @@ ETH Donation Address : 0x498A2A9F3C8e58eABd71C3F0624ceE34Fd671aFd
 
 # Have questions ? 
 
-Telegram chat : https://web.telegram.org/#/im?p=@Upfiring
+Official Telegram : https://web.telegram.org/#/im?p=@Upfiring
