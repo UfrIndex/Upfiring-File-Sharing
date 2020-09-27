@@ -41,23 +41,23 @@ Apache Enable : allow_url_fopen
 
     Run this command in the home directory
 
-    cp .env.example .env
+        cp .env.example .env
     
-    php artisan key:generate
+        php artisan key:generate
     
 - Modify env file. Change your database connection settings, website name, email settings etc.
 
 - Install packages using composer
 
-    php composer install
+        php composer install
     
 - Create tables in database
 
-    php artisan migrate
+        php artisan migrate
     
 - Run command to create a link
 
-    php artisan storage:link
+        php artisan storage:link
     
 -  In file /app/Providers/ViewServiceProvider.php uncommentstring string 31-49
 
