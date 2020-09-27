@@ -30,12 +30,12 @@ Apache Enable : allow_url_fopen
 
 .htaccess example : 
 
-<IfModule mod_rewrite.c>
-RewriteEngine On
-RewriteCond %{HTTPS} !on
-RewriteRule ^.*$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-RewriteRule ^(.*)$ public/$1 [L]
-</IfModule>
+    <IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTPS} !on
+    RewriteRule ^.*$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    RewriteRule ^(.*)$ public/$1 [L]
+    </IfModule>
 
 - Create config files and set your application key to a random string :
 
