@@ -78,3 +78,11 @@ Apache Enable : allow_url_fopen
         /2    * curl -s "https://domain.com/cron_update" > /dev/null
 
 You are all done :)
+
+# Want to Support us ?
+
+BTC Donation Address : 1G5bG9W1NmyJ6ww8GWsK9GJzJy3NhB2Lv5
+
+UFR Donation Address : 0x498A2A9F3C8e58eABd71C3F0624ceE34Fd671aFd
+
+ETH Donation Address : 0x498A2A9F3C8e58eABd71C3F0624ceE34Fd671aFd 
