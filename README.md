@@ -75,7 +75,7 @@ Apache Enable : allow_url_fopen
 
 -   Add Cron Job to autoupdate S/L numbers automaticly 
 
-        /2    * curl -s "https://domain.com/cron_update" > /dev/null
+        */2 * * * * curl -s "https://domain.com/cron_update" > /dev/null
 
 You are all done :)
 
