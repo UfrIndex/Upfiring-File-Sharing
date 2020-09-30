@@ -1,12 +1,12 @@
 # Upfiring File Sharing 
 
 - User Management ( Administrator / Moderator / Contributor )
-- Pages Menagment 
+- Pages Management
 - Footer / Header custom script support ( Google Analytics, Ads Code etc )
-- Upfiring File Managmeent ( File Moderation, Listing etc )
-- Comments Menagmenet 
-- Advertising Panel : Top Banner / Side Banners / Announcment Box
-- Website Options ( Title , Description , Front Page menagment etc )
+- Upfiring File Management ( File Moderation, Listing etc )
+- Comments Management
+- Advertising Panel : Top Banner / Side Banners / Announcement Box
+- Website Options ( Title , Description , Front Page Management etc )
 
 Complete UFR File Support + Integrated S/L scraper to display the correct Seeders/Leechers numbers on each file. S/L numbers are updated on each link view / or via cron job which is explained bellow.
 
