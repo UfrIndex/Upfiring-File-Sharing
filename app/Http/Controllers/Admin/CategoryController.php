@@ -12,8 +12,8 @@ use Illuminate\Http\Request;
 class CategoryController extends Controller
 {
     use Tablesort;
-    private $sortBy = 'name';
-    private $direction_name = 'asc';
+    private $sortBy = 'seeders';
+    private $direction_name = 'desc';
     private $header_script = '';
     private $footer_script = '';
     private $footer = '';

@@ -20,58 +20,55 @@
 @section('content')
 
     <div class="info-box single-info-box">
+        <div class="col-md-12">
+            <h1>@yield('title')</h1>
+        </div>
         <div class="row">
-
-            <div class="col-md-12">
-                <div class="table-file-info">
-                    <div class="likes-info-in-file text-center @auth auth-in-file @else notauth @endauth">
-                        @if ($UfrFile->image == '')
-                            <img src="/img/logo.png" style="max-height: 350px;" alt="no-image">
-                        @else
-                            <img src="/storage/{{ $UfrFile->image }}" style="max-height: 350px;" alt="{{ $UfrFile->name }}">
-                        @endif
-                        <div class="add-like"><span class="like" data-id="{{ $UfrFile->id }}"><i class="fa fa-thumbs-up" aria-hidden="true"></i> {{$UfrFile->count_likes }}</span> |  <span data-id="{{ $UfrFile->id }}" class="dislike"><i class="fa fa-thumbs-down" aria-hidden="true"></i> {{$UfrFile->count_dislikes }}</span></div>
-                    </div>
-                    <div class="right-info">
-                        @guest
-                            <a href="#" data-id="{{ $UfrFile->id }}" class="btn btn-primary btn-sm" id="errorReport">Report</a>
-                        @else
-                            @if ($report == 0 )
+            <div class="col-md-3 text-center">
+                @if ($UfrFile->image == '')
+                    <img src="/img/logo.png" alt="no-image">
+                @else
+                    <img src="/storage/{{ $UfrFile->image }}" alt="{{ $UfrFile->name }}">
+                @endif
+                <div class="likes-info-in-file text-center @auth auth @else notauth @endauth">
+                    <div class="add-like"><span class="like" data-id="{{ $UfrFile->id }}"><i class="fa fa-thumbs-up" aria-hidden="true"></i> {{$UfrFile->count_likes }}</span> |  <span data-id="{{ $UfrFile->id }}" class="dislike"><i class="fa fa-thumbs-down" aria-hidden="true"></i> {{$UfrFile->count_dislikes }}</span></div>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <ul class="file-info-list">
+                    @guest
+                        <a href="#" data-id="{{ $UfrFile->id }}" class="btn btn-primary btn-sm" id="errorReport">Report</a>
+                    @else
+                        @if ($report == 0 )
                             <a href="#" data-id="{{ $UfrFile->id }}" class="btn btn-primary btn-sm" id="ModalReportForm">Report</a>
-                            @endif
-                        @endguest
+                        @endif
+                    @endguest
+                    <li><span>Category:</span>
 
-                        <ul class="file-info-list">
-                            <li class="title"><h1>@yield('title')</h1></li>
-                            <li><span>Category:</span>
+                        @foreach($UfrFile->categories as $category)
+                            <a href="{{ route('category.show', $category->slug) }}">{{ $category->name }}</a>,
+                        @endforeach</li>
+                    <li><span>Author:</span> {{ $user->name }}</li>
+                    <li><span>Price:</span> {{ $UfrFile->price }}</li>
+                    <li><span>Pieces:</span> {{ $UfrFile->pieces }}</li>
+                    <li><span>Creation date:</span> {{ date('M d, Y', strtotime($UfrFile->created_at)) }}</li>
+                    <li><span>File:</span> {{ $UfrFile->encfile }}</li>
+                    <li><span>Size:</span> {{ $UfrFile->size }}</li>
+                    <li class="d-none d-sm-block"><span>Owner:</span> {{ $UfrFile->owner }}</li>
+                    <li><span>Info:</span> {{ $UfrFile->info }}</li>
+                    <li><span>Seeds/Peers:</span> <span class="seeds">{{ $UfrFile->seeds }}</span>/<span class="peers">{{ $UfrFile->peers }}</span></li>
 
-                                @foreach($UfrFile->categories as $category)
-                                    <a href="{{ route('category.show', $category->slug) }}">{{ $category->name }}</a>,
-                                @endforeach</li>
-                            <li><span>Author:</span> {{ $user->name }}</li>
-                            <li><span>Price:</span> {{ $UfrFile->price }}</li>
-                            <li><span>Pieces:</span> {{ $UfrFile->pieces }}</li>
-                            <li><span>Creation date:</span> {{ date('M d, Y', strtotime($UfrFile->created_at)) }}</li>
-                            <li><span>File:</span> {{ $UfrFile->encfile }}</li>
-                            <li><span>Size:</span> {{ $UfrFile->size }} MB</li>
-                            <li class="d-none d-sm-block"><span>Owner:</span> {{ $UfrFile->owner }}</li>
-                            <li><span>Info:</span> {{ $UfrFile->info }}</li>
-                            <li><span>Seeds/Peers:</span> <span class="seeds">{{ $UfrFile->seeds }}</span>/<span class="peers">{{ $UfrFile->peers }}</span></li>
-
-                            @if ($UfrFile->visible == 0 && $moderation_status == true)
-                                <li class="alert-info"><span>Warning:</span> The file will be published after being moderated</li>
-                            @else
-                                <li><span>Download:</span> <a href="{{ route('download-file', $UfrFile->slug ) }}">{{ $UfrFile->name }}</a></li>
-                            @endif
-
-                            @auth
+                    @if ($UfrFile->visible == 0 )
+                        <li class="alert-info"><span>Warning:</span> The file will be published after being moderated</li>
+                    @else
+                        <li><span>Download:</span> <a href="{{ route('download-file', $UfrFile->slug ) }}">{{ $UfrFile->name }}</a></li>
+                    @endif
+                        @auth
                             @if ($UfrFile->user_id == Auth::user()->id or  Auth::user()->role_id > 1 )
                                 <li><span class="btn btn-danger delete-file" data-id="{{ $UfrFile->id }}" id="{{ $UfrFile->id }}" style="padding: 0;">Delete</span></li>
                             @endif
-                            @endauth
-                        </ul>
-                    </div>
-                </div>
+                        @endauth
+                </ul>
             </div>
         </div>
 
@@ -86,6 +83,7 @@
     @endauth
     </div>
 @endsection
+
 
 @section('script')
     <script>

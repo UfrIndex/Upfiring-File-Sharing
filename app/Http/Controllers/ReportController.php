@@ -54,7 +54,6 @@ class ReportController extends Controller
             }
         }
         abort(404);
-
     }
 
     /**

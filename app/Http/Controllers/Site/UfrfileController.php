@@ -23,12 +23,6 @@ class UfrfileController extends Controller
 {
     use Tablesort;
 
-    private $sortBy = 'name';
-    private $direction_name = 'asc';
-    private $header_script = '';
-    private $footer_script = '';
-    private $footer = '';
-
     public $trackers = array (
         'udp://trackerinternetwarriors.net:1337',
         'udp://tracker.opentrackr.org:1337',
@@ -39,6 +33,12 @@ class UfrfileController extends Controller
         'wss://tracker.fastcast.nzel32',
         'wss://tracker.openwebtorrent.comee7:comment417'
     );
+
+    private $sortBy = 'name';
+    private $direction_name = 'asc';
+    private $header_script = '';
+    private $footer_script = '';
+    private $footer = '';
 
     public function __construct(Request $request)
     {
@@ -226,7 +226,6 @@ class UfrfileController extends Controller
         //dd($request->file('ufrfile')->getMimeType(), $request->file('ufrfile')->getClientMimeType());
         $option = Option::find(1);
 
-
         Validator::make($request->all(), [
             'name' => 'required|min:3',
             'ufrfile' => 'required|file|mimes:torrent',
@@ -246,6 +245,7 @@ class UfrfileController extends Controller
             $visible = ($option->moderation_status == true ) ? false : true;
 
             $contents = Storage::disk('public')->get($path);
+
             $torrent = new Torrent(Storage::disk('public')->url($path));
             $magnet = 'magnet:?xt=urn:btih:'
                 . $torrent->hash_info()
@@ -263,7 +263,6 @@ class UfrfileController extends Controller
                         'msg'        => 'This image type is not supported.'
                     ]);
                 }
-
                 $path_image = $request->file('poster')->storeAs('poster/'.date("Y/m/d"), Str::random(6) . '-' . $request->file('poster')->getClientOriginalName(), 'public');
             }
             else {
@@ -278,10 +277,10 @@ class UfrfileController extends Controller
                 $ufrFile = new UfrFile;
                 $ufrFile->user_id = Auth::id();
                 $ufrFile->price = $this->get_string_between($contents, '"price":', ',"');
-                $ufrFile->pieces = $this->get_string_between($contents, 'pieces', ':');
+                $ufrFile->pieces = $this->get_string_between($contents, ':pieces', ':');
                 $ufrFile->name = $name;
                 $ufrFile->slug = $slug;
-                $ufrFile->size = round((int)$this->get_string_between($contents, 'lengthi', 'e6') / 10000 / 1024 / 1024, 2);
+                $ufrFile->size = $this->get_size($contents);
                 $ufrFile->creationdate = $this->get_string_between($contents, 'creation datei', 'e4');
                 $ufrFile->owner = $this->get_string_between($contents, '"owner":"', '"}');
                 $ufrFile->info = $info;
@@ -315,7 +314,7 @@ class UfrfileController extends Controller
                 abort(405);
                 return response()->json([
                     'status'        => 'error',
-                    'msg'        => $e
+                    'msg'        => $e->getMessage()
                 ]);
             }
             return redirect(route('upload-file.show', $ufrFile->slug));
@@ -325,7 +324,7 @@ class UfrfileController extends Controller
             abort(405);
             return response()->json([
                 'status'        => 'error',
-                'msg'        => $e
+                'msg'        => $e->getMessage()
             ]);
         }
     }
@@ -339,7 +338,6 @@ class UfrfileController extends Controller
     public function show($slug)
     {
         $option = Option::find(1);
-
         $UfrFile = UfrFile::where('slug', $slug)->firstOrFail();
 
         if ( ! Auth::user()) {
@@ -402,21 +400,39 @@ class UfrfileController extends Controller
         }
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\UfrFile  $ufrFile
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(UfrFile $ufrFile)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\UfrFile  $ufrFile
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, UfrFile $ufrFile)
+    {
+        //
+    }
+
     public function cron()
     {
         $option = Option::find(1);
-        if ($option->moderation_status == true) {
-            $UfrFilesUpd = UfrFile::where('visible', 1);
-        }
-        else {
-            $UfrFilesUpd = UfrFile::whereIn('visible', [0,1]);
-        }
+        $UfrFilesUpd = UfrFile::where('visible', 1);
 
         $this->direction_name = 'desc';
         $UfrFilesUpd = $UfrFilesUpd->orderBy('seeds', 'desc');
+        $limit = ($option->count_rows_in_alternative_table > 20) ? 20 : $option->count_rows_in_alternative_table;
+        $UfrFilesUpd = $UfrFilesUpd->limit($limit)->get();
 
-        $UfrFilesUpd = $UfrFilesUpd->limit($option->count_rows_in_alternative_table)->get();
-        $torrent = new Torrent();
         foreach ($UfrFilesUpd as $file_for_upd) {
             $UfrFile = UfrFile::where('id', $file_for_upd->id)->first();
 
@@ -425,9 +441,12 @@ class UfrfileController extends Controller
             $UfrFile->peers = $get_seeder_lecher['peers'];
             $UfrFile->updated_at = now();
             $UfrFile->save();
+
         }
 
-        $UfrFile = UfrFile::where('updated_at', UfrFile::min('updated_at'))->first();
+
+        $UfrFile = UfrFile::where('updated_at', UfrFile::min('updated_at'))->limit(10)->get();
+
         foreach ($UfrFile as $file_for_upd) {
             $file_upd = UfrFile::where('id', $file_for_upd->id)->first();
 
@@ -437,8 +456,9 @@ class UfrfileController extends Controller
             $file_upd->updated_at = now();
             $file_upd->save();
         }
-    }
 
+
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -467,15 +487,48 @@ class UfrfileController extends Controller
         return (json_encode($accept));
     }
 
+
+    public function update_seeders_info($id)
+    {
+        $UfrFile = UfrFile::find($id);
+
+        $get_seeder_lecher = $this->get_seeder_lecher($UfrFile->path);
+        $answer = [
+            'answer' => true,
+            'data' => [
+                'seeds' => $get_seeder_lecher['seeds'],
+                'peers' => $get_seeder_lecher['peers']
+            ]
+        ];
+        $UfrFile->seeds = $get_seeder_lecher['seeds'];
+        $UfrFile->peers = $get_seeder_lecher['peers'];
+        $UfrFile->save();
+
+        return $answer;
+    }
+
+    public function update_file_update()
+    {
+        $UfrFilesUpd = UfrFile::all();
+        foreach ($UfrFilesUpd as $file_for_upd) {
+            if (Storage::disk('public')->exists($file_for_upd->path)) {
+                $contents = Storage::disk('public')->get($file_for_upd->path);
+
+                $size = $this->get_size($contents);
+
+                $UfrFile = UfrFile::where('id', $file_for_upd->id)->first();
+                $UfrFile->size = $size;
+                $UfrFile->save();
+            }
+        }
+    }
+
     public function file_update()
     {
         $option = Option::find(1);
-        if ($option->moderation_status == true) {
-            $UfrFilesUpd = UfrFile::where('visible', 1);
-        }
-        else {
-            $UfrFilesUpd = UfrFile::whereIn('visible', [0,1]);
-        }
+
+        $UfrFilesUpd = UfrFile::whereIn('visible', [0,1]);
+
 
         $this->direction_name = 'desc';
         $UfrFilesUpd = $UfrFilesUpd->orderBy('seeds', 'desc');
@@ -493,34 +546,6 @@ class UfrfileController extends Controller
         }
     }
 
-    public function update_seeders_info($id)
-    {
-        $UfrFile = UfrFile::find($id);
-
-        $torrent = new Torrent();
-        try {
-            $seeds_info = $torrent->getSeeds($UfrFile->magnet);
-
-            if(isset($seeds_info->response->seeds) && isset($seeds_info->response->peers)) {
-
-                $UfrFile->seeds = $seeds_info->response->seeds;
-                $UfrFile->peers = $seeds_info->response->peers;
-                $UfrFile->save();
-                $answer = [
-                    'answer' => true,
-                    'data' => [
-                        'seeds' => $seeds_info->response->seeds,
-                        'peers' => $seeds_info->response->peers
-                    ]
-                ];
-                return json_encode($answer);
-            }
-
-        } catch (Exception $e) {
-
-        }
-    }
-
     public function get_seeder_lecher($path)
     {
         $torrent = new Torrent(Storage::disk('public')->url($path));
@@ -531,6 +556,19 @@ class UfrfileController extends Controller
         $seeds = (isset($seeders_info[$hash_info]['seeders'])) ? $seeders_info[$hash_info]['seeders'] : 0;
         $leechers = (isset($seeders_info[$hash_info]['leechers'])) ? $seeders_info[$hash_info]['leechers'] : 0;
         return [ 'seeds' => $seeds, 'peers' => $leechers ];
+    }
+
+    public function get_size($cotent_file)
+    {
+        $allsize = 0;
+        preg_match_all("/lengthi(.*?)e4/",
+            $cotent_file,
+            $out);
+        foreach ($out[1] as $size) {
+
+            $allsize += $size / 1000000;
+        }
+        return round( $allsize, 0 );
     }
 
 }

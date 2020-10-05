@@ -1,6 +1,3 @@
-<section class="search">
-    @if ( app('request')->input('s') )
-    <div class="container">
         <div class="row">
             <div class="col-md-12">
 
@@ -14,6 +11,3 @@
                 </form>
             </div>
         </div>
-    </div>
-    @endif
-</section>

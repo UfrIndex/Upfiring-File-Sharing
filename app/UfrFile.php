@@ -47,4 +47,9 @@ class UfrFile extends Model
         $this->attributes['slug'] = $this->get_unique_slug($value);
     }
 
+    public function getSizeAttribute($value)
+    {
+        return ($value < 1024) ? $value .' MB' : round( $value/1000, 2 ) .' GB';
+    }
+
 }

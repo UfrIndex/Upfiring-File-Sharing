@@ -19,11 +19,12 @@ Route::get('/clear', function() {
     return "Кэш очищен!";
 });
 
-Route::get('/file_update', 'Site\UfrfileController@file_update')->name('file_update');
 
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/home', 'HomeController@search')->name('search');
 Route::post('/update-seeders/{id}', 'Site\UfrfileController@update_seeders_info')->name('upd_seeders');
+Route::get('/file_update', 'Site\UfrfileController@file_update')->name('file_update');
+Route::get('/update_file_update', 'Site\UfrfileController@update_file_update')->name('update_file_update');
 
 Auth::routes(['verify' => true]);
 Route::get('/contact', 'HomeController@sendMailForm')->name('contact');

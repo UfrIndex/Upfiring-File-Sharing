@@ -245,7 +245,7 @@ class FilesController extends Controller
      * @param  \App\UfrFile  $ufrFile
      * @return \Illuminate\Http\Response
      */
-    public function destroy($ufrFile)
+    public function destroy( $ufrFile)
     {
         try {
             $file = UfrFile::find($ufrFile);
@@ -254,6 +254,6 @@ class FilesController extends Controller
         catch (\Exception $e) {
 
         }
-        return redirect()->back();
+        return redirect()->route('admin.files.index');
     }
 }

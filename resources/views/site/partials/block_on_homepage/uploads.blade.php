@@ -41,7 +41,7 @@
                 </td>
                 <td>{{  $last_upload[$i]->price }} ufr</td>
                 <td class="d-none d-xl-block"><span class="date">{{ date('M d, Y', strtotime( $last_upload[$i]->created_at)) }}</span></td>
-                <td><span class="size">{{  $last_upload[$i]->size }} MB</span></td>
+                <td><span class="size">{{  $last_upload[$i]->size }}</span></td>
             </tr>
         @endfor
 

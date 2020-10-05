@@ -45,7 +45,7 @@
                             </td>
                             <td>{{ $topFiles[$i]->price }} ufr</td>
                             <td class="d-none d-xl-block"><span class="date">{{ date('M d, Y', strtotime($topFiles[$i]->created_at)) }}</span></td>
-                            <td><span class="size">{{ $topFiles[$i]->size }} MB</span></td>
+                            <td><span class="size">{{ $topFiles[$i]->size }}</span></td>
                         </tr>
                     @endif
                 @endif

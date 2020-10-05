@@ -22,5 +22,4 @@ class Report extends Model
     {
         return $this->belongsTo('App\UfrFile', 'ufr_file_id');
     }
-
 }

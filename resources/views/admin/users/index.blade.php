@@ -62,7 +62,7 @@
                             <a class="btn btn-outline-warning btn-sm" href="{{route('admin.user.edit',$user)}}"><i class="mdi mdi-grease-pencil"></i></a>
                         </td>
                         <td class="action-button">
-                            <form onsubmit="if(confirm('Delete user?')){return true}else{return false}" action="{{route('admin.user.destroy',$user)}}" method="post">
+                            <form onsubmit="if(confirm('Удалить страницу?')){return true}else{return false}" action="{{route('admin.user.destroy',$user)}}" method="post">
                                 {{ csrf_field() }}
                                 <input type="hidden" name="_method" value="delete">
                                 <button type="submit" class="btn btn-outline-danger btn-sm"><i class="mdi mdi-delete"></i></button>

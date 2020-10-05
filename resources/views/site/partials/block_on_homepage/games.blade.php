@@ -45,7 +45,7 @@
                             </td>
                             <td>{{  $top_games[$i]->price }} ufr</td>
                             <td class="d-none d-xl-block"><span class="date">{{ date('M d, Y', strtotime( $top_games[$i]->created_at)) }}</span></td>
-                            <td><span class="size">{{  $top_games[$i]->size }} MB</span></td>
+                            <td><span class="size">{{  $top_games[$i]->size }}</span></td>
                         </tr>
                     @endif
                 @endif

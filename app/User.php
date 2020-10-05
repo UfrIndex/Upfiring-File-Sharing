@@ -47,11 +47,6 @@ class User extends Authenticatable
         return $this->hasMany('App\Comment');
     }
 
-    public function report()
-    {
-        return $this->hasMany('App\Report');
-    }
-
     public function file()
     {
         return $this->hasMany('App\UfrFile');

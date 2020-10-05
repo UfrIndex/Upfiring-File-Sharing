@@ -74,7 +74,7 @@ class OptionController extends Controller
     public function update(Request $request, Option $option)
     {
         $input = $request->all();
-        $input[''] = (isset ($input['frontpage_status'])) ? true : false;
+        $input['frontpage_status'] = (isset ($input['frontpage_status'])) ? true : false;
         $input['homepage_first_status'] = (isset ($input['homepage_first_status'])) ? true : false;
         $input['homepage_second_status'] = (isset ($input['homepage_second_status'])) ? true : false;
         $input['homepage_third_status'] = (isset ($input['homepage_third_status'])) ? true : false;

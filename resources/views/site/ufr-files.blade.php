@@ -45,11 +45,11 @@
                 </td>
                 <td>{{ $file->price }} ufr</td>
                 <td class="d-none d-md-block"><span class="date">{{ date('M d, Y', strtotime($file->created_at)) }}</span></td>
-                <td><span class="size">{{ $file->size }} MB</span></td>
+                <td><span class="size">{{ $file->size }}</span></td>
             </tr>
         @empty
             <tr>
-                <td colspan="7">
+                <td colspan="6">
                     Files not found
                 </td>
             </tr>
@@ -59,6 +59,8 @@
     </table>
     @if (isset($get_param))
     {{ $UfrFiles->appends($get_param)->links() }}
+    @elseif($UfrFiles->links())
+       {{ $UfrFiles->links() }}
     @endif
     </div>
 @endsection
