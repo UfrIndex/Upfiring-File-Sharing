@@ -79,6 +79,16 @@ Apache Enable : allow_url_fopen
 
 You are all done :)
 
+# Version 1.01 Update: 
+
+- Added report button 
+- Added the ability to delete uploads
+- Various bugs fixed
+
+To update database for new version run :
+ 
+        php artisan migrate
+
 # Want to Support us ?
 
 BTC Donation Address : 1G5bG9W1NmyJ6ww8GWsK9GJzJy3NhB2Lv5
